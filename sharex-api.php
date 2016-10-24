@@ -17,7 +17,7 @@ header("Content-Type: text/text");
 ///
 $config = array();
 
-$config["key"] = "2371858247"; // This is the master key, to access the uploader
+$config["key"] = ""; // This is the master key, to access the uploader
 $config["save"] = "i/"; // Enter the directory to save to (keep empty for none)
 $config["host"] = "http://" . $_SERVER['HTTP_HOST'] . "/";
 $config["allowed"] = array("png", "jpg", "gif", "rar", "zip", "mp4", "mp3", "txt", "h", "cpp", "lua", "dll");
