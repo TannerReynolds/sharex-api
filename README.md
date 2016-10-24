@@ -19,7 +19,7 @@ ShareX-API Uses the POST Method for submitting data, so make sure all requests a
 If you are returned with just your url that you uploaded, this means that the upload was a success.
 
 ## INVALID_KEY
-Invalid Key Means the master key for the sharex-api Is Invalid, you should recheck the key set in the php file.
+This Means the master key for the sharex-api Is Invalid, you should recheck the key set in the php file.
 
 ## INVALID_DATA_PACKET
 This Means the data was not successfully transfered, Most likely corrupted or just in general packet-loss
