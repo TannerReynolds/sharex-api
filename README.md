@@ -3,7 +3,7 @@ A ShareX API That can be used to upload text files, images, video's and much mor
 
 # Setting Up ShareX-API On ShareX
 Copy The Settings from the picture shown below
-![im1](http://i.imgur.com/S5m3rpA.png)
+![im1](http://not-an.iplogger.cf/11445.png)
 
 # Setting Up The ShareX-API Server
 1. Download The sharex-api.php file located within this github project.
@@ -27,8 +27,8 @@ This Means the data was not successfully transfered, Most likely corrupted or ju
 ## DATA_TOO_LARGE
 This Means the data being uploaded to the server Is Too large, try settings $config["max_upload_size"] abit higher.
 
-## INVALID_DATA_EXTENSION
-This Means the extension you are trying to upload Is not on the whitelist. you can add to the extension whitelist at the top of your api php file. ($config["allowed"])
+## INVALID_DATA_EXTENSION : ADMINS_ONLY
+This Means the extension you are trying to upload Is not on the whitelist. you can add to the extension whitelist at the top of your api php file ($config["allowed"]). Alternately, you can use the key to bypass the filetype check
 
 ## FILE_CANT_UPLOAD
 This Means the file cannot be moved to the destination, try setting the folder you wish to move the images to, to 777 (All Access Rights)
