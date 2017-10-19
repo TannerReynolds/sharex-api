@@ -29,57 +29,56 @@
   SOFTWARE.
 */
 
-// NOTE: REMEMBER TO SET upload_max_filesize in the php.ini!
 
-// Set Our Return data type to text, (to prevent any sort of XSS or php shell execution exploitation)
+
+
 header("Content-Type: text/text");
 
-///
-/// Application Paramaters
-///
+
 $config = array();
 
-$config["key"] = ""; // This is the master key, to access the uploader
-$config["save"] = "i/"; // Enter the directory to save to (keep empty for none)
+$config["key"] = "%B,D^VLol/!YF{Ax";
+$config["save"] = ""; 
 $config["host"] = "http://" . $_SERVER['HTTP_HOST'] . "/";
-$config["allowed"] = array("png", "jpg", "gif", "rar", "zip", "mp4", "mp3", "txt", "h", "cpp", "lua", "dll");
-$config["max_upload_size"] = 25; // IN MB
+$config["allowed"] = array("png", "jpg", "gif", "mp4", "mp3", "txt", "jpeg", "tiff", "bmp", "ico", "psd", "eps", "raw", "cr2", "nef", "sr2", "orf", "svg", "wav", "webm", "aac", "flac", "ogg", "wma", "m4a", "gifv");
+$config["max_upload_size"] = 50; 
 
-///
-/// Upload File
-///
+$configAdmin = array();
+
+$configAdmin["save"] = ""; 
+$configAdmin["host"] = "http://" . $_SERVER['HTTP_HOST'] . "/";
+$configAdmin["allowed"] = array("png", "jpg", "gif", "mp4", "mp3", "txt", "jpeg", "tiff", "bmp", "ico", "psd", "eps", "raw", "cr2", "nef", "sr2", "orf", "svg", "wav", "webm", "aac", "flac", "ogg", "wma", "m4a", "gifv", "json", "zip", "exe", "php", "html", "css", "lua", "js", "java", "ini", "rar", "md", "xml", "bat", "less", "jar", "sass", "cs", "dll", "iso", "cfg", "torrent", "7zip", "bin", "ovpn", "pkg");
+$configAdmin["max_upload_size"] = 1024; 
+
+
+if(!isset($_POST["key"]) || $_POST["key"] != $config["key"]) {
 function UploadFile($config)
 {
-
-  // Validate Key
-  if(!isset($_POST["key"]) || $_POST["key"] != $config["key"])
-    die("INVALID_KEY");
-
-  // Validate ShareX
+  
   if(!isset($_FILES["fdata"]))
     die("INVALID_DATA_PACKET");
 
   if($_FILES["fdata"]["size"] > $config["max_upload_size"] * 1024 * 1024)
     die("DATA_TOO_LARGE");
 
-  // Create Data for file
+  
   $data = array();
   $data["filename"] = $_FILES["fdata"]['name'];
   $data["buffer"] = $_FILES["fdata"]["tmp_name"];
   $data["extension"] = pathinfo($_FILES["fdata"]['name'], PATHINFO_EXTENSION);
   $data["final-save-name"] = $config["save"] . $data["filename"] . "." . $data["extension"];
-  //$data["uploaded"] = move_uploaded_file($data["buffer"], $data["final-save-name"]);
+  
 
-  // Validate Extension
+  
   if(!in_array($data["extension"], $config["allowed"]))
     die("INVALID_DATA_EXTENSION");
 
   if(move_uploaded_file($data["buffer"], $data["final-save-name"]))
   {
-    $file_signed = crc32(md5_file($data["final-save-name"])) % 100000; // Sign file with a crc32 and md5'd file hash (Also good because they cant upload the same file twice)
-    rename($data["final-save-name"], $config["save"] . $file_signed . "." . $data["extension"]); // Rename file
+    $file_signed = crc32(md5_file($data["final-save-name"])) % 100000; 
+    rename($data["final-save-name"], $config["save"] . $file_signed . "." . $data["extension"]); 
 
-    die($config["host"] . $config["save"] . $file_signed . "." . $data["extension"]); // Return file location
+    die($config["host"] . $config["save"] . $file_signed . "." . $data["extension"]); 
   }
   else
   {
@@ -91,5 +90,52 @@ function UploadFile($config)
 }
 
 UploadFile($config);
+} else {
+
+
+  function UploadFile($configAdmin)
+{
+  // Validate ShareX
+  if(!isset($_FILES["fdata"]))
+    die("INVALID_DATA_PACKET");
+
+  if($_FILES["fdata"]["size"] > $configAdmin["max_upload_size"] * 1024 * 1024)
+    die("DATA_TOO_LARGE");
+
+  
+  $data = array();
+  $data["filename"] = $_FILES["fdata"]['name'];
+  $data["buffer"] = $_FILES["fdata"]["tmp_name"];
+  $data["extension"] = pathinfo($_FILES["fdata"]['name'], PATHINFO_EXTENSION);
+  $data["final-save-name"] = $configAdmin["save"] . $data["filename"] . "." . $data["extension"];
+  
+
+  
+  if(!in_array($data["extension"], $configAdmin["allowed"]))
+    die("INVALID_DATA_EXTENSION");
+
+  if(move_uploaded_file($data["buffer"], $data["final-save-name"]))
+  {
+    $file_signed = crc32(md5_file($data["final-save-name"])) % 100000; 
+    rename($data["final-save-name"], $configAdmin["save"] . $file_signed . "." . $data["extension"]); 
+
+    die($configAdmin["host"] . $configAdmin["save"] . $file_signed . "." . $data["extension"]); 
+  }
+  else
+  {
+    die("FILE_CANT_UPLOAD");
+  }
+
+  die("FILE_ERROR_UNKNOWN");
+
+}
+
+UploadFile($configAdmin);
+
+
+
+}
+
+
 
 ?>
