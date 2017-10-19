@@ -37,7 +37,7 @@ header("Content-Type: text/text");
 
 $config = array();
 
-$config["key"] = "%B,D^VLol/!YF{Ax";
+$config["key"] = "some password here";
 $config["save"] = ""; 
 $config["host"] = "http://" . $_SERVER['HTTP_HOST'] . "/";
 $config["allowed"] = array("png", "jpg", "gif", "mp4", "mp3", "txt", "jpeg", "tiff", "bmp", "ico", "psd", "eps", "raw", "cr2", "nef", "sr2", "orf", "svg", "wav", "webm", "aac", "flac", "ogg", "wma", "m4a", "gifv");
@@ -47,7 +47,6 @@ $configAdmin = array();
 
 $configAdmin["save"] = ""; 
 $configAdmin["host"] = "http://" . $_SERVER['HTTP_HOST'] . "/";
-$configAdmin["allowed"] = array("png", "jpg", "gif", "mp4", "mp3", "txt", "jpeg", "tiff", "bmp", "ico", "psd", "eps", "raw", "cr2", "nef", "sr2", "orf", "svg", "wav", "webm", "aac", "flac", "ogg", "wma", "m4a", "gifv", "json", "zip", "exe", "php", "html", "css", "lua", "js", "java", "ini", "rar", "md", "xml", "bat", "less", "jar", "sass", "cs", "dll", "iso", "cfg", "torrent", "7zip", "bin", "ovpn", "pkg");
 $configAdmin["max_upload_size"] = 1024; 
 
 
@@ -71,7 +70,7 @@ function UploadFile($config)
 
   
   if(!in_array($data["extension"], $config["allowed"]))
-    die("INVALID_DATA_EXTENSION");
+    die("INVALID_DATA_EXTENSION : ADMINS_ONLY");
 
   if(move_uploaded_file($data["buffer"], $data["final-save-name"]))
   {
@@ -109,11 +108,6 @@ UploadFile($config);
   $data["extension"] = pathinfo($_FILES["fdata"]['name'], PATHINFO_EXTENSION);
   $data["final-save-name"] = $configAdmin["save"] . $data["filename"] . "." . $data["extension"];
   
-
-  
-  if(!in_array($data["extension"], $configAdmin["allowed"]))
-    die("INVALID_DATA_EXTENSION");
-
   if(move_uploaded_file($data["buffer"], $data["final-save-name"]))
   {
     $file_signed = crc32(md5_file($data["final-save-name"])) % 100000; 
